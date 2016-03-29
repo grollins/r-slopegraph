@@ -82,10 +82,10 @@ build_slopegraph <- function(df, x, y, group, method="tufte", min.space=0.05) {
 ##' @return a data frame with the ypos column added
 spaced_sort <- function(df, min.space=0.05) {
     ## Define a minimum spacing (5% of full data range)
-    min.space <- min.space*diff(range(df$y))
+    min.space <- min.space * diff(range(df$y))
 
     ## Transform the data
-    df <- ddply(df, .(x), calc_spaced_offset, min.space)
+    df <- df %>% group_by(x) %>% calc_spaced_offset(min.space) %>% as.data.frame()
     return(df)
 }
 
