@@ -60,7 +60,7 @@ build_slopegraph <- function(df, x, y, group, method="tufte", min.space=0.05) {
         df <- mutate(df, ypos=y)               
         return(df)
     } else if (method=="rank") {
-        df <- ddply(df, .(x), summarize, x=x, y=y, group=group, ypos=rank(y))
+        df <- df %>% group_by(x) %>% mutate(ypos=dense_rank(y)) %>% as.data.frame()
         return(df)
     } else if (method=="tufte") {
         df <- tufte_sort(df, min.space=min.space)
